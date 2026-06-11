@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  /* "Livro-caixa moderno": papel quente + verde-cédula + tinta */
+  --color-bg: #f3f1e9;
+  --color-surface: #fdfcf8;
+  --color-surface-2: #ebe8dc;
+  --color-border: #ddd8c7;
+  --color-ink: #1c2620;
+  --color-muted: #6f7a6f;
+  --color-primary: #0b4f30;
+  --color-primary-dark: #083b24;
+  --color-primary-fg: #f4f8f2;
+  --color-debt: #a82917;
+  --color-debt-dark: #7e1d0f;
+  --color-brass: #96752f;
+  --color-whats: #1d9e4e;
+
+  --font-sans: var(--font-atkinson), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-money), ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Valores monetários alinhados em coluna, como num livro contábil */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Linhas pautadas entre itens, eco da caderneta de papel */
+.pautado > * + * {
+  border-top: 1px dashed var(--color-border);
+}
+
+/* Título de seção com filete duplo, estilo livro-caixa clássico */
+.ledger-head {
+  border-bottom: 3px double var(--color-border);
+  padding-bottom: 0.4rem;
+}
+
+/* Cartão "cédula": verde profundo com luz, anéis e hachura finíssima */
+.banknote {
+  background-color: var(--color-primary);
+  background-image:
+    radial-gradient(ellipse 130% 90% at 88% -12%, rgba(255, 255, 255, 0.16), transparent 55%),
+    repeating-radial-gradient(circle at 112% 55%, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 8px),
+    radial-gradient(circle at 8% 120%, rgba(0, 0, 0, 0.28), transparent 55%);
+}
+.banknote-debt {
+  background-color: var(--color-debt);
+  background-image:
+    radial-gradient(ellipse 130% 90% at 88% -12%, rgba(255, 255, 255, 0.14), transparent 55%),
+    repeating-radial-gradient(circle at 112% 55%, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 8px),
+    radial-gradient(circle at 8% 120%, rgba(0, 0, 0, 0.3), transparent 55%);
+}
+
+/* Carimbo de papelaria ("EM DIA") */
+.stamp {
+  display: inline-block;
+  border: 1.5px solid currentColor;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Entrada suave em cascata no carregamento */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  animation: fadeUp 0.45s ease both;
+  animation-delay: var(--d, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+}
