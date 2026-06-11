@@ -9,6 +9,8 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin")) {
+    // Setup (definir/recuperar senha do dono) é protegido pela chave, não pela sessão
+    if (pathname === "/admin/setup") return NextResponse.next();
     const ehDono = await adminLogado(request.cookies.get(COOKIE_ADMIN)?.value);
     if (pathname === "/admin/login") {
       return ehDono ? NextResponse.redirect(new URL("/admin", request.url)) : NextResponse.next();

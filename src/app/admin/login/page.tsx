@@ -1,13 +1,14 @@
+import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { entrarAdmin } from "./actions";
 import { getMeta } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-type Busca = Promise<{ erro?: string }>;
+type Busca = Promise<{ erro?: string; definida?: string }>;
 
 export default async function AdminLogin({ searchParams }: { searchParams: Busca }) {
-  const { erro } = await searchParams;
+  const { erro, definida } = await searchParams;
   const semSenha = !(await getMeta("admin_senha_hash"));
 
   return (
@@ -23,21 +24,28 @@ export default async function AdminLogin({ searchParams }: { searchParams: Busca
         </div>
 
         {semSenha ? (
-          <div className="rounded-3xl border border-border bg-surface p-6 text-sm leading-relaxed">
+          <div className="rounded-3xl border border-border bg-surface p-6 text-center text-sm leading-relaxed">
             <p className="font-bold">Senha do dono ainda não definida.</p>
             <p className="mt-2 text-muted">
-              No computador, na pasta do projeto, rode:
+              Defina agora, pelo navegador — você vai precisar da sua chave de configuração.
             </p>
-            <code className="mt-2 block rounded-xl bg-bg px-3 py-2 font-mono text-xs">
-              npm run admin-senha -- sua-senha-forte
-            </code>
-            <p className="mt-2 text-muted">Depois recarregue esta página.</p>
+            <Link
+              href="/admin/setup"
+              className="mt-4 inline-block rounded-2xl bg-ink px-5 py-3 font-bold text-bg"
+            >
+              Definir senha do dono
+            </Link>
           </div>
         ) : (
           <form
             action={entrarAdmin}
             className="flex flex-col gap-4 rounded-3xl border border-border bg-surface p-6"
           >
+            {definida && (
+              <p className="rounded-2xl bg-primary/10 px-4 py-3 text-center text-sm font-bold text-primary">
+                Senha definida! Agora é só entrar.
+              </p>
+            )}
             {erro && (
               <p className="rounded-2xl bg-debt/10 px-4 py-3 text-center text-sm font-bold text-debt">
                 Senha incorreta.
